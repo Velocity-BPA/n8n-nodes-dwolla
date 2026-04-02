@@ -53,6 +53,13 @@ export class DwollaApi implements ICredentialType {
 			default: 'sandbox',
 			description: 'The Dwolla environment to connect to',
 		},
+		{
+			displayName: 'API Base URL',
+			name: 'baseUrl',
+			type: 'string',
+			default: 'https://api.dwolla.com',
+			description: 'The base URL for Dwolla API',
+		},
 	];
 
 	authenticate: IAuthenticateGeneric = {
