@@ -75,6 +75,7 @@ export class Dwolla implements INodeType {
 					{ name: 'Mass Payment', value: 'massPayment' },
 					{ name: 'Transfer', value: 'transfer' },
 					{ name: 'Webhook Subscription', value: 'webhookSubscription' },
+					{ name: 'Account', value: 'account' },
 				],
 				default: 'customer',
 			},
@@ -123,21 +124,21 @@ export class Dwolla implements INodeType {
 							type: this.getNodeParameter('type', i) as string,
 							...this.getNodeParameter('additionalFields', i) as IDataObject,
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', '/customers', body);
+						responseData = await dwollaApiRequest.call(this, 'POST', '/customers', body) as any;
 					}
 					if (operation === 'get') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						const filters = this.getNodeParameter('filters', i) as IDataObject;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'customers', 'GET', '/customers', {}, filters);
+							responseData = await dwollaApiRequestAllItems.call(this, 'customers', 'GET', '/customers', {}, filters) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							filters.limit = limit;
-							const response = await dwollaApiRequest.call(this, 'GET', '/customers', {}, filters);
+							const response = await dwollaApiRequest.call(this, 'GET', '/customers', {}, filters) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.customers as IDataObject[]) || [];
 						}
@@ -145,19 +146,19 @@ export class Dwolla implements INodeType {
 					if (operation === 'update') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, updateFields);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, updateFields) as any;
 					}
 					if (operation === 'suspend') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, { status: 'suspended' });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, { status: 'suspended' }) as any;
 					}
 					if (operation === 'deactivate') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, { status: 'deactivated' });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, { status: 'deactivated' }) as any;
 					}
 					if (operation === 'retryVerification') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, { status: 'retry' });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}`, { status: 'retry' }) as any;
 					}
 				}
 
@@ -169,7 +170,7 @@ export class Dwolla implements INodeType {
 							plaidToken: this.getNodeParameter('plaidToken', i) as string,
 							name: this.getNodeParameter('name', i) as string,
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/funding-sources`, body);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/funding-sources`, body) as any;
 					}
 					if (operation === 'createMicroDeposits') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
@@ -179,22 +180,22 @@ export class Dwolla implements INodeType {
 							bankAccountType: this.getNodeParameter('bankAccountType', i) as string,
 							name: this.getNodeParameter('name', i) as string,
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/funding-sources`, body);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/funding-sources`, body) as any;
 					}
 					if (operation === 'get') {
 						const fundingSourceId = this.getNodeParameter('fundingSourceId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/funding-sources/${fundingSourceId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/funding-sources/${fundingSourceId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						const filters = this.getNodeParameter('filters', i) as IDataObject;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'funding-sources', 'GET', `/customers/${customerId}/funding-sources`, {}, filters);
+							responseData = await dwollaApiRequestAllItems.call(this, 'funding-sources', 'GET', `/customers/${customerId}/funding-sources`, {}, filters) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							filters.limit = limit;
-							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/funding-sources`, {}, filters);
+							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/funding-sources`, {}, filters) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.['funding-sources'] as IDataObject[]) || [];
 						}
@@ -202,19 +203,19 @@ export class Dwolla implements INodeType {
 					if (operation === 'update') {
 						const fundingSourceId = this.getNodeParameter('fundingSourceId', i) as string;
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}`, updateFields);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}`, updateFields) as any;
 					}
 					if (operation === 'remove') {
 						const fundingSourceId = this.getNodeParameter('fundingSourceId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}`, { removed: true });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}`, { removed: true }) as any;
 					}
 					if (operation === 'getBalance') {
 						const fundingSourceId = this.getNodeParameter('fundingSourceId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/funding-sources/${fundingSourceId}/balance`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/funding-sources/${fundingSourceId}/balance`) as any;
 					}
 					if (operation === 'initiateMicroDeposits') {
 						const fundingSourceId = this.getNodeParameter('fundingSourceId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}/micro-deposits`);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}/micro-deposits`) as any;
 					}
 					if (operation === 'verifyMicroDeposits') {
 						const fundingSourceId = this.getNodeParameter('fundingSourceId', i) as string;
@@ -222,7 +223,7 @@ export class Dwolla implements INodeType {
 							amount1: { value: this.getNodeParameter('amount1', i) as string, currency: 'USD' },
 							amount2: { value: this.getNodeParameter('amount2', i) as string, currency: 'USD' },
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}/micro-deposits`, body);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/funding-sources/${fundingSourceId}/micro-deposits`, body) as any;
 					}
 				}
 
@@ -279,33 +280,33 @@ export class Dwolla implements INodeType {
 							}
 						}
 
-						responseData = await dwollaApiRequest.call(this, 'POST', '/transfers', body);
+						responseData = await dwollaApiRequest.call(this, 'POST', '/transfers', body) as any;
 					}
 					if (operation === 'get') {
 						const transferId = this.getNodeParameter('transferId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/transfers/${transferId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/transfers/${transferId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						const filters = this.getNodeParameter('filters', i) as IDataObject;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'transfers', 'GET', `/customers/${customerId}/transfers`, {}, filters);
+							responseData = await dwollaApiRequestAllItems.call(this, 'transfers', 'GET', `/customers/${customerId}/transfers`, {}, filters) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							filters.limit = limit;
-							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/transfers`, {}, filters);
+							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/transfers`, {}, filters) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.transfers as IDataObject[]) || [];
 						}
 					}
 					if (operation === 'cancel') {
 						const transferId = this.getNodeParameter('transferId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/transfers/${transferId}`, { status: 'cancelled' });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/transfers/${transferId}`, { status: 'cancelled' }) as any;
 					}
 					if (operation === 'getFees') {
 						const transferId = this.getNodeParameter('transferId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/transfers/${transferId}/fees`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/transfers/${transferId}/fees`) as any;
 					}
 				}
 
@@ -340,22 +341,22 @@ export class Dwolla implements INodeType {
 							body.clearing = { destination: additionalFields.clearingDestination };
 						}
 
-						responseData = await dwollaApiRequest.call(this, 'POST', '/mass-payments', body);
+						responseData = await dwollaApiRequest.call(this, 'POST', '/mass-payments', body) as any;
 					}
 					if (operation === 'get') {
 						const massPaymentId = this.getNodeParameter('massPaymentId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/mass-payments/${massPaymentId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/mass-payments/${massPaymentId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						const filters = this.getNodeParameter('filters', i) as IDataObject;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'mass-payments', 'GET', `/customers/${customerId}/mass-payments`, {}, filters);
+							responseData = await dwollaApiRequestAllItems.call(this, 'mass-payments', 'GET', `/customers/${customerId}/mass-payments`, {}, filters) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							filters.limit = limit;
-							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/mass-payments`, {}, filters);
+							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/mass-payments`, {}, filters) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.['mass-payments'] as IDataObject[]) || [];
 						}
@@ -363,16 +364,16 @@ export class Dwolla implements INodeType {
 					if (operation === 'update') {
 						const massPaymentId = this.getNodeParameter('massPaymentId', i) as string;
 						const status = this.getNodeParameter('status', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/mass-payments/${massPaymentId}`, { status });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/mass-payments/${massPaymentId}`, { status }) as any;
 					}
 					if (operation === 'getItems') {
 						const massPaymentId = this.getNodeParameter('massPaymentId', i) as string;
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'items', 'GET', `/mass-payments/${massPaymentId}/items`);
+							responseData = await dwollaApiRequestAllItems.call(this, 'items', 'GET', `/mass-payments/${massPaymentId}/items`) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
-							const response = await dwollaApiRequest.call(this, 'GET', `/mass-payments/${massPaymentId}/items`, {}, { limit });
+							const response = await dwollaApiRequest.call(this, 'GET', `/mass-payments/${massPaymentId}/items`, {}, { limit }) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.items as IDataObject[]) || [];
 						}
@@ -386,19 +387,19 @@ export class Dwolla implements INodeType {
 							url: this.getNodeParameter('url', i) as string,
 							secret: this.getNodeParameter('secret', i) as string,
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', '/webhook-subscriptions', body);
+						responseData = await dwollaApiRequest.call(this, 'POST', '/webhook-subscriptions', body) as any;
 					}
 					if (operation === 'get') {
 						const webhookSubscriptionId = this.getNodeParameter('webhookSubscriptionId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/webhook-subscriptions/${webhookSubscriptionId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/webhook-subscriptions/${webhookSubscriptionId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'webhook-subscriptions', 'GET', '/webhook-subscriptions');
+							responseData = await dwollaApiRequestAllItems.call(this, 'webhook-subscriptions', 'GET', '/webhook-subscriptions') as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
-							const response = await dwollaApiRequest.call(this, 'GET', '/webhook-subscriptions', {}, { limit });
+							const response = await dwollaApiRequest.call(this, 'GET', '/webhook-subscriptions', {}, { limit }) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.['webhook-subscriptions'] as IDataObject[]) || [];
 						}
@@ -406,15 +407,15 @@ export class Dwolla implements INodeType {
 					if (operation === 'update') {
 						const webhookSubscriptionId = this.getNodeParameter('webhookSubscriptionId', i) as string;
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/webhook-subscriptions/${webhookSubscriptionId}`, updateFields);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/webhook-subscriptions/${webhookSubscriptionId}`, updateFields) as any;
 					}
 					if (operation === 'delete') {
 						const webhookSubscriptionId = this.getNodeParameter('webhookSubscriptionId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'DELETE', `/webhook-subscriptions/${webhookSubscriptionId}`);
+						responseData = await dwollaApiRequest.call(this, 'DELETE', `/webhook-subscriptions/${webhookSubscriptionId}`) as any;
 					}
 					if (operation === 'pause') {
 						const webhookSubscriptionId = this.getNodeParameter('webhookSubscriptionId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/webhook-subscriptions/${webhookSubscriptionId}`, { paused: true });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/webhook-subscriptions/${webhookSubscriptionId}`, { paused: true }) as any;
 					}
 				}
 
@@ -422,15 +423,15 @@ export class Dwolla implements INodeType {
 				if (resource === 'event') {
 					if (operation === 'get') {
 						const eventId = this.getNodeParameter('eventId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/events/${eventId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/events/${eventId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'events', 'GET', '/events');
+							responseData = await dwollaApiRequestAllItems.call(this, 'events', 'GET', '/events') as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
-							const response = await dwollaApiRequest.call(this, 'GET', '/events', {}, { limit });
+							const response = await dwollaApiRequest.call(this, 'GET', '/events', {}, { limit }) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.events as IDataObject[]) || [];
 						}
@@ -455,20 +456,20 @@ export class Dwolla implements INodeType {
 								},
 							},
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/documents`, body);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/documents`, body) as any;
 					}
 					if (operation === 'get') {
 						const documentId = this.getNodeParameter('documentId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/documents/${documentId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/documents/${documentId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'documents', 'GET', `/customers/${customerId}/documents`);
+							responseData = await dwollaApiRequestAllItems.call(this, 'documents', 'GET', `/customers/${customerId}/documents`) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
-							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/documents`, {}, { limit });
+							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/documents`, {}, { limit }) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.documents as IDataObject[]) || [];
 						}
@@ -496,20 +497,20 @@ export class Dwolla implements INodeType {
 								country: addressValues.country || 'US',
 							},
 						};
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/beneficial-owners`, body);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/beneficial-owners`, body) as any;
 					}
 					if (operation === 'get') {
 						const beneficialOwnerId = this.getNodeParameter('beneficialOwnerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'GET', `/beneficial-owners/${beneficialOwnerId}`);
+						responseData = await dwollaApiRequest.call(this, 'GET', `/beneficial-owners/${beneficialOwnerId}`) as any;
 					}
 					if (operation === 'getAll') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 						if (returnAll) {
-							responseData = await dwollaApiRequestAllItems.call(this, 'beneficial-owners', 'GET', `/customers/${customerId}/beneficial-owners`);
+							responseData = await dwollaApiRequestAllItems.call(this, 'beneficial-owners', 'GET', `/customers/${customerId}/beneficial-owners`) as any;
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
-							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/beneficial-owners`, {}, { limit });
+							const response = await dwollaApiRequest.call(this, 'GET', `/customers/${customerId}/beneficial-owners`, {}, { limit }) as any;
 							const embedded = response._embedded as IDataObject;
 							responseData = (embedded?.['beneficial-owners'] as IDataObject[]) || [];
 						}
@@ -535,15 +536,39 @@ export class Dwolla implements INodeType {
 							}
 						}
 
-						responseData = await dwollaApiRequest.call(this, 'POST', `/beneficial-owners/${beneficialOwnerId}`, body);
+						responseData = await dwollaApiRequest.call(this, 'POST', `/beneficial-owners/${beneficialOwnerId}`, body) as any;
 					}
 					if (operation === 'delete') {
 						const beneficialOwnerId = this.getNodeParameter('beneficialOwnerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'DELETE', `/beneficial-owners/${beneficialOwnerId}`);
+						responseData = await dwollaApiRequest.call(this, 'DELETE', `/beneficial-owners/${beneficialOwnerId}`) as any;
 					}
 					if (operation === 'certify') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/beneficial-ownership`, { status: 'certified' });
+						responseData = await dwollaApiRequest.call(this, 'POST', `/customers/${customerId}/beneficial-ownership`, { status: 'certified' }) as any;
+					}
+				}
+
+				// Account Operations
+				if (resource === 'account') {
+					if (operation === 'get') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+						responseData = await dwollaApiRequest.call(this, 'GET', `/accounts/${accountId}`) as any;
+					}
+					if (operation === 'getFundingSources') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+						responseData = await dwollaApiRequest.call(this, 'GET', `/accounts/${accountId}/funding-sources`) as any;
+					}
+					if (operation === 'getTransfers') {
+						const accountId = this.getNodeParameter('accountId', i) as string;
+						const startDate = this.getNodeParameter('startDate', i, '') as string;
+						const endDate = this.getNodeParameter('endDate', i, '') as string;
+
+						const queryParams: string[] = [];
+						if (startDate) queryParams.push(`startDate=${encodeURIComponent(startDate)}`);
+						if (endDate) queryParams.push(`endDate=${encodeURIComponent(endDate)}`);
+						
+						const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+						responseData = await dwollaApiRequest.call(this, 'GET', `/accounts/${accountId}/transfers${queryString}`) as any;
 					}
 				}
 
@@ -552,7 +577,7 @@ export class Dwolla implements INodeType {
 					{ itemData: { item: i } },
 				);
 				returnData.push(...executionData);
-			} catch (error) {
+			} catch (error: any) {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
 					continue;
