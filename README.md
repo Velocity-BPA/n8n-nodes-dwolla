@@ -1,6 +1,6 @@
 # n8n-nodes-dwolla
 
-> [Velocity BPA Licensing Notice]
+> **[Velocity BPA Licensing Notice]**
 >
 > This n8n node is licensed under the Business Source License 1.1 (BSL 1.1).
 >
@@ -8,53 +8,32 @@
 >
 > For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
 
-[![NPM Version](https://img.shields.io/npm/v/n8n-nodes-dwolla.svg)](https://www.npmjs.com/package/n8n-nodes-dwolla)
-[![License: BUSL-1.1](https://img.shields.io/badge/License-BUSL--1.1-blue.svg)](LICENSE)
+This n8n community node provides seamless integration with Dwolla's payment platform, enabling automated bank transfers, customer management, and payment processing workflows. With support for 6 core resources, it offers comprehensive capabilities for ACH transfers, mass payments, customer onboarding, funding source management, webhook handling, and account operations.
 
-n8n community node for the **Dwolla ACH payment platform**. Enables workflow automation for ACH transfers, customer management, funding sources, mass payments, and white-label payment operations.
-
-## Author
-
-**Velocity BPA**
-- Website: [https://velobpa.com](https://velobpa.com)
-- GitHub: [Velocity-BPA](https://github.com/Velocity-BPA)
+![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-blue)
+![License](https://img.shields.io/badge/license-BSL--1.1-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+![Dwolla API](https://img.shields.io/badge/Dwolla-API%20v2-orange)
+![ACH Payments](https://img.shields.io/badge/ACH-Payments-green)
+![Bank Transfers](https://img.shields.io/badge/Bank-Transfers-purple)
 
 ## Features
 
-### Main Node (Dwolla)
-
-- **Customer Management**: Create, retrieve, update, suspend, deactivate, and retry verification for customers (personal, business, receive-only, unverified)
-- **Funding Sources**: Add bank accounts via Plaid or micro-deposits, verify micro-deposits, retrieve balances, manage funding sources
-- **Transfers**: Initiate ACH transfers with Same-Day ACH and RTP support, cancel pending transfers, retrieve transfer fees
-- **Mass Payments**: Process batch payments to multiple recipients, manage deferred payments, retrieve payment items
-- **Webhook Subscriptions**: Create and manage webhook endpoints for real-time event notifications
-- **Events**: Retrieve and list Dwolla platform events
-- **Documents**: Upload and manage verification documents for customers
-- **Beneficial Owners**: Manage beneficial ownership for business customers, certify ownership
-
-### Trigger Node (Dwolla Trigger)
-
-Real-time webhook triggers for:
-- Customer lifecycle events (created, verified, suspended, deactivated)
-- Funding source events (added, verified, removed)
-- Transfer events (created, completed, failed, cancelled)
-- Bank transfer events (created, completed, failed)
-- Mass payment events (created, completed, cancelled)
-- Verification document events (needed, uploaded, approved, failed)
-- Micro-deposit events (added, completed, failed)
-
-## Prerequisites
-
-- n8n version 1.0.0 or later
-- Dwolla API credentials (sandbox or production)
-- Node.js 18.0.0 or later
+- **Customer Management** - Create, update, retrieve, and manage customer profiles with full KYC support
+- **Funding Source Operations** - Add, verify, and manage bank accounts and funding sources for customers
+- **Transfer Processing** - Initiate, track, and manage ACH transfers between accounts with real-time status updates
+- **Mass Payment Capabilities** - Execute bulk payment operations with batch processing and status tracking
+- **Webhook Integration** - Receive and process real-time event notifications from Dwolla's platform
+- **Account Management** - Access account information, balance details, and account configuration settings
+- **Comprehensive Error Handling** - Built-in retry logic and detailed error messages for troubleshooting
+- **Production Ready** - Full support for both sandbox and production Dwolla environments
 
 ## Installation
 
-### Community Node (Recommended)
+### Community Nodes (Recommended)
 
-1. Open your n8n instance
-2. Navigate to **Settings** > **Community Nodes**
+1. Open n8n
+2. Go to **Settings** → **Community Nodes**
 3. Click **Install a community node**
 4. Enter `n8n-nodes-dwolla`
 5. Click **Install**
@@ -62,237 +41,226 @@ Real-time webhook triggers for:
 ### Manual Installation
 
 ```bash
-# Navigate to your n8n custom extensions directory
-cd ~/.n8n/custom
-
-# Install the package
+cd ~/.n8n
 npm install n8n-nodes-dwolla
-
-# Restart n8n
 ```
 
-### Docker Installation
+### Development Installation
 
-Add to your n8n Dockerfile:
-
-```dockerfile
-RUN cd /usr/local/lib/node_modules/n8n && npm install n8n-nodes-dwolla
+```bash
+git clone https://github.com/Velocity-BPA/n8n-nodes-dwolla.git
+cd n8n-nodes-dwolla
+npm install
+npm run build
+mkdir -p ~/.n8n/custom
+ln -s $(pwd) ~/.n8n/custom/n8n-nodes-dwolla
+n8n start
 ```
 
-Or mount a custom directory:
+## Credentials Setup
 
-```yaml
-volumes:
-  - ./custom-nodes:/home/node/.n8n/custom
-```
+| Field | Description | Required |
+|-------|-------------|----------|
+| API Key | Your Dwolla API key for authentication | Yes |
+| API Secret | Your Dwolla API secret for authentication | Yes |
+| Environment | Select between 'sandbox' and 'production' | Yes |
+| Base URL | Dwolla API base URL (auto-configured based on environment) | No |
 
-## Configuration
+## Resources & Operations
 
-### Credentials Setup
+### 1. Customer
 
-1. In n8n, go to **Credentials** > **New Credential**
-2. Search for "Dwolla API"
-3. Enter your credentials:
-   - **Client ID**: Your Dwolla Application Key
-   - **Client Secret**: Your Dwolla Application Secret
-   - **Environment**: Select `sandbox` for testing or `production` for live transactions
+| Operation | Description |
+|-----------|-------------|
+| Create | Create a new customer with personal or business information |
+| Get | Retrieve customer details by customer ID |
+| Update | Update existing customer information |
+| List | List all customers with optional filtering |
+| Suspend | Suspend a customer account |
+| Reactivate | Reactivate a suspended customer account |
+| Upload Document | Upload verification documents for customer |
 
-### Getting Dwolla API Credentials
+### 2. Funding Source
 
-1. Sign up at [Dwolla Dashboard](https://dashboard.dwolla.com)
-2. Create an application in the sandbox environment
-3. Copy the Application Key and Secret
-4. For production, complete Dwolla's approval process
+| Operation | Description |
+|-----------|-------------|
+| Create | Add a new bank account or funding source to a customer |
+| Get | Retrieve funding source details by ID |
+| Update | Update funding source information |
+| List | List all funding sources for a customer |
+| Remove | Remove a funding source from a customer |
+| Initiate Micro Deposits | Start micro-deposit verification process |
+| Verify Micro Deposits | Complete micro-deposit verification |
+
+### 3. Transfer
+
+| Operation | Description |
+|-----------|-------------|
+| Create | Initiate a new ACH transfer between funding sources |
+| Get | Retrieve transfer details and status by transfer ID |
+| List | List transfers with filtering by date, status, or customer |
+| Cancel | Cancel a pending transfer |
+| Get Fees | Calculate fees for a potential transfer |
+| Retry | Retry a failed transfer |
+
+### 4. Mass Payment
+
+| Operation | Description |
+|-----------|-------------|
+| Create | Create a new mass payment job with multiple recipients |
+| Get | Retrieve mass payment details and status |
+| List | List all mass payments with optional filtering |
+| Get Items | Retrieve individual payment items within a mass payment |
+| Update | Update mass payment information |
+| Cancel | Cancel a pending mass payment |
+
+### 5. Webhook
+
+| Operation | Description |
+|-----------|-------------|
+| Create Subscription | Create a new webhook subscription for events |
+| Get Subscription | Retrieve webhook subscription details |
+| List Subscriptions | List all webhook subscriptions |
+| Update Subscription | Update webhook subscription settings |
+| Delete Subscription | Remove a webhook subscription |
+| Pause Subscription | Temporarily pause webhook delivery |
+| List Webhooks | List received webhook events |
+
+### 6. Account
+
+| Operation | Description |
+|-----------|-------------|
+| Get | Retrieve account information and details |
+| Update | Update account settings and configuration |
+| List Funding Sources | List funding sources associated with the account |
+| Get Balance | Retrieve current account balance |
+| List Transfers | List transfers associated with the account |
+| Get Fees | Retrieve fee schedule for the account |
 
 ## Usage Examples
 
-### Create a Customer
-
-```json
-{
-  "resource": "customer",
-  "operation": "create",
-  "type": "personal",
+```javascript
+// Create a new customer
+const customerData = {
   "firstName": "John",
-  "lastName": "Doe",
+  "lastName": "Doe", 
   "email": "john.doe@example.com",
-  "additionalFields": {
-    "address1": "123 Main St",
-    "city": "San Francisco",
-    "state": "CA",
-    "postalCode": "94105",
-    "dateOfBirth": "1990-01-15",
-    "ssn": "1234"
-  }
-}
+  "type": "personal",
+  "address1": "123 Main St",
+  "city": "Des Moines",
+  "state": "IA",
+  "postalCode": "50309",
+  "dateOfBirth": "1990-01-01",
+  "ssn": "123-45-6789"
+};
 ```
 
-### Create a Transfer
-
-```json
-{
-  "resource": "transfer",
-  "operation": "create",
-  "sourceFundingSourceId": "source-funding-id",
-  "destinationFundingSourceId": "dest-funding-id",
-  "amount": "100.00",
-  "additionalFields": {
-    "clearingSource": "same-day",
-    "clearingDestination": "standard"
-  }
-}
+```javascript
+// Add a funding source (bank account)
+const fundingSourceData = {
+  "customerId": "customer-123",
+  "routingNumber": "222222226",
+  "accountNumber": "123456789",
+  "bankAccountType": "checking",
+  "name": "John Doe - Checking"
+};
 ```
 
-### Create a Mass Payment
-
-```json
-{
-  "resource": "massPayment",
-  "operation": "create",
-  "sourceFundingSourceId": "source-funding-id",
-  "items": {
-    "itemValues": [
-      {
-        "destinationFundingSourceId": "dest-1",
-        "amount": "50.00"
-      },
-      {
-        "destinationFundingSourceId": "dest-2",
-        "amount": "75.00"
-      }
-    ]
+```javascript
+// Initiate an ACH transfer
+const transferData = {
+  "_links": {
+    "source": {
+      "href": "https://api.dwolla.com/funding-sources/source-id"
+    },
+    "destination": {
+      "href": "https://api.dwolla.com/funding-sources/dest-id"
+    }
+  },
+  "amount": {
+    "currency": "USD",
+    "value": "100.00"
+  },
+  "metadata": {
+    "orderId": "12345",
+    "description": "Payment for services"
   }
-}
+};
 ```
 
-### Webhook Trigger Configuration
-
-1. Add the **Dwolla Trigger** node to your workflow
-2. Configure the webhook secret (must match your Dwolla webhook subscription)
-3. Select the events you want to listen for
-4. Activate the workflow
-
-## API Reference
-
-### Resources
-
-| Resource | Operations |
-|----------|------------|
-| Customer | Create, Get, Get Many, Update, Suspend, Deactivate, Retry Verification |
-| Funding Source | Create (Plaid/Micro-deposits), Get, Get Many, Update, Remove, Get Balance, Initiate/Verify Micro-deposits |
-| Transfer | Create, Get, Get Many, Cancel, Get Fees |
-| Mass Payment | Create, Get, Get Many, Update, Get Items |
-| Webhook Subscription | Create, Get, Get Many, Update, Delete, Pause |
-| Event | Get, Get Many |
-| Document | Create, Get, Get Many |
-| Beneficial Owner | Create, Get, Get Many, Update, Delete, Certify |
-
-### Customer Types
-
-| Type | Description |
-|------|-------------|
-| receive-only | Can only receive funds |
-| unverified | Basic customer with limited functionality |
-| personal | Verified individual customer |
-| business | Verified business customer |
-
-### Clearing Options
-
-| Option | Description |
-|--------|-------------|
-| standard | Standard ACH processing (1-3 business days) |
-| next-available | Next available processing window |
-| same-day | Same-day ACH processing |
+```javascript
+// Create a mass payment
+const massPaymentData = {
+  "items": [
+    {
+      "amount": {"currency": "USD", "value": "50.00"},
+      "_links": {"destination": {"href": "https://api.dwolla.com/funding-sources/dest1"}},
+      "metadata": {"recipientName": "Alice Smith"}
+    },
+    {
+      "amount": {"currency": "USD", "value": "75.00"},
+      "_links": {"destination": {"href": "https://api.dwolla.com/funding-sources/dest2"}},
+      "metadata": {"recipientName": "Bob Johnson"}
+    }
+  ],
+  "_links": {"source": {"href": "https://api.dwolla.com/funding-sources/source-id"}},
+  "metadata": {"batchId": "batch-001", "description": "Weekly payroll"}
+};
+```
 
 ## Error Handling
 
-The node includes comprehensive error handling for Dwolla API responses:
-
-- HAL+JSON error parsing from `_embedded.errors`
-- OAuth token refresh with 1-minute buffer
-- Automatic retry on token expiration
-- Detailed error messages for debugging
+| Error | Description | Solution |
+|-------|-------------|----------|
+| Invalid API credentials | Authentication failed with provided API key/secret | Verify credentials in node configuration and check environment |
+| Insufficient funds | Transfer amount exceeds available balance | Check funding source balance before initiating transfer |
+| Invalid routing number | Bank routing number format is incorrect | Validate routing number format and bank information |
+| Customer validation failed | Required customer information missing or invalid | Review customer data requirements and provide complete information |
+| Transfer limit exceeded | Transfer amount exceeds daily/monthly limits | Check account limits and split large transfers if needed |
+| Webhook verification failed | Webhook signature validation failed | Verify webhook secret and signature validation logic |
 
 ## Development
 
-### Building from Source
-
 ```bash
-# Clone the repository
-git clone https://github.com/Velocity-BPA/n8n-nodes-dwolla.git
-cd n8n-nodes-dwolla
-
-# Install dependencies
 npm install
-
-# Build the project
 npm run build
-
-# Run tests
 npm test
-```
-
-### Running Tests
-
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run tests in watch mode
-npm run test:watch
-```
-
-### Linting
-
-```bash
-# Run ESLint
 npm run lint
-
-# Fix linting issues
-npm run lintfix
+npm run dev
 ```
+
+## Author
+
+**Velocity BPA**
+- Website: [velobpa.com](https://velobpa.com)
+- GitHub: [Velocity-BPA](https://github.com/Velocity-BPA)
 
 ## Licensing
 
-[Velocity BPA Licensing Notice]
+This n8n community node is licensed under the **Business Source License 1.1**.
 
-This n8n node is licensed under the Business Source License 1.1 (BSL 1.1).
+### Free Use
+Permitted for personal, educational, research, and internal business use.
 
-Use of this node by for-profit organizations in production environments requires a commercial license from Velocity BPA.
+### Commercial Use
+Use of this node within any SaaS, PaaS, hosted platform, managed service, or paid automation offering requires a commercial license.
 
-For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
+For licensing inquiries: **licensing@velobpa.com**
 
-See [LICENSE](LICENSE), [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md), and [LICENSING_FAQ.md](LICENSING_FAQ.md) for full terms.
+See [LICENSE](LICENSE), [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md), and [LICENSING_FAQ.md](LICENSING_FAQ.md) for details.
+
+## Contributing
+
+Contributions are welcome! Please ensure:
+
+1. Code follows existing style conventions
+2. All tests pass (`npm test`)
+3. Linting passes (`npm run lint`)
+4. Documentation is updated for new features
+5. Commit messages are descriptive
 
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Velocity-BPA/n8n-nodes-dwolla/issues)
-- **Documentation**: [Dwolla API Docs](https://developers.dwolla.com/)
-- **Commercial Support**: licensing@velobpa.com
-
-## Changelog
-
-### 1.0.0
-
-- Initial release
-- Full Dwolla API v1 support
-- OAuth 2.0 client credentials authentication
-- Customer management operations
-- Funding source management with Plaid and micro-deposit support
-- ACH transfer operations with Same-Day ACH support
-- Mass payment batch processing
-- Webhook trigger with HMAC-SHA256 verification
-- Document upload for customer verification
-- Beneficial owner management for business customers
-- Comprehensive test suite
-
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines and submit pull requests to the GitHub repository.
-
-## Disclaimer
-
-This is an unofficial community node and is not affiliated with, endorsed by, or supported by Dwolla, Inc. Dwolla is a registered trademark of Dwolla, Inc.
+- **Dwolla API Documentation**: [Dwolla API Docs](https://docs.dwolla.com/)
+- **Dwolla Developer Community**: [Dwolla Community](https://discuss.dwolla.com/)
